@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMXII - Boardman12 | Neural Networks & Architecture</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="BMXII Logo" onerror="this.style.display='none'">
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="hamburger" aria-label="Open navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+    <section id="home" class="hero" style="background-image: url('{{ url_for('static', filename='hero.png') }}');">
+        <div class="hero-content">
+            <h1>Boardman12</h1>
+            <h3>Architects of the Digital & Physical Future</h3>
+            <p class="hero-subtitle">Pioneering Excellence in Neural Networks, Architectural Innovation & Sustainable Technology Solutions for the Modern World</p>
+            <a href="#contact" class="cta-button">Begin Your Journey</a>
+        </div>
+    </section>
+    <section id="about" class="section reveal">
+        <div class="about-content">
+            <h2 class="section-title" style="text-align: left; margin-left: 0;">About BMXII</h2>
+            <p>
+                <span class="highlight">Boardman12 (BMXII)</span> stands as a distinguished technology and architectural organization, 
+                specializing in cutting-edge neural networking solutions, comprehensive web and mobile application development, 
+                innovative ready-made house delivery systems, and advanced piezoelectric tile distribution with professional installations.
+            </p>
+            <p>
+                We expertly bridge the sophisticated gap between <span class="highlight">innovative technology</span> and 
+                <span class="highlight">sustainable architecture</span>, creating seamless integrations that define the future of intelligent living.
+            </p>
+        </div>
+        <div class="about-images">
+            <div class="about-image" style="background-image: url('{{ url_for('static', filename='architecture.png') }}');"></div>
+            <div class="about-image" style="background-image: url('{{ url_for('static', filename='ai.png') }}');"></div>
+        </div>
+    </section>
+    <section id="services" class="section reveal">
+        <h2 class="section-title">Our Expertise</h2>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-brain"></i></div>
+                <h3 class="service-title">Advanced Neural Networking</h3>
+                <p class="service-description">Sophisticated AI solutions featuring advanced neural network architecture, intelligent system implementations, and cutting-edge artificial intelligence.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-code"></i></div>
+                <h3 class="service-title">Premium Web & Mobile Development</h3>
+                <p class="service-description">Full-stack web and mobile applications utilizing modern frameworks and industry-leading development practices for responsive, cross-platform solutions.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-home"></i></div>
+                <h3 class="service-title">Luxury Ready-Made Houses</h3>
+                <p class="service-description">Premium, eco-friendly homes with smart architectural design, seamlessly integrated with sustainable living solutions and modern amenities.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-bolt"></i></div>
+                <h3 class="service-title">Piezoelectric Energy Solutions</h3>
+                <p class="service-description">Professional distribution and expert installation of innovative energy-harvesting piezoelectric tiles for clean, sustainable power generation.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                <h3 class="service-title">Enterprise Network Solutions</h3>
+                <p class="service-description">Comprehensive enterprise networking, advanced infrastructure design, robust security, and sophisticated network optimization strategies.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-icon"><i class="fas fa-tools"></i></div>
+                <h3 class="service-title">Strategic Technical Consulting</h3>
+                <p class="service-description">Expert consultation on technology integration, system architecture planning, and digital transformation strategies tailored to your unique requirements.</p>
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="section reveal">
+        <h2 class="section-title">Connect With Excellence</h2>
+        <form class="contact-form" id="contactForm">
+            <div id="messageContainer"></div> 
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your complete name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your professional email">
+            </div>
+            <div class="form-group">
+                <label for="phone">Contact Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your contact number">
+            </div>
+            <div class="form-group">
+                <label for="service">Service of Interest</label>
+                <select id="service" name="service">
+                    <option value="">Select your area of interest</option>
+                    <option value="neural-networking">Advanced Neural Networking</option>
+                    <option value="web-mobile-dev">Premium Web & Mobile Development</option>
+                    <option value="ready-made-houses">Luxury Ready-Made Houses</option>
+                    <option value="piezoelectric-tiles">Piezoelectric Energy Solutions</option>
+                    <option value="network-solutions">Enterprise Network Solutions</option>
+                    <option value="technical-consulting">Strategic Technical Consulting</option>
+                    <option value="other">Other Specialized Services</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="message">Detailed Message *</label>
+                <textarea id="message" name="message" rows="6" required placeholder="Please provide detailed information about your project requirements..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Submit Inquiry</button>
+        </form>
+    </section>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2019 - 2025 Boardman12 (BMXII). All rights reserved. | bmxii.org | e-Architecture</p>
+        </div>
+    </footer>
+    <div id="popupModal" class="popup-modal">
+        <div class="popup-content">
+            <div id="popupIcon" class="popup-icon"></div>
+            <h2 id="popupTitle" class="popup-title"></h2>
+            <p id="popupMessage" class="popup-message"></p>
+            <button id="popupCloseBtn" class="popup-close-btn">OK</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
