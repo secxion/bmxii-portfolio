@@ -4,20 +4,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const navMenu = document.querySelector('.nav-menu');
     if (hamburger && navMenu) {
         hamburger.addEventListener('click', (e) => {
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
-        document.addEventListener('click', (e) => {
-            if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+            const isActive = navMenu.classList.contains('active');
+            if (!isActive) {
+                navMenu.classList.add('active');
+                hamburger.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
                 navMenu.classList.remove('active');
                 hamburger.classList.remove('active');
+                document.body.style.overflow = '';
             }
+        });
+        // Close menu when clicking outside drawer or resizing
+        document.addEventListener('click', (e) => {
+            if (
+                navMenu.classList.contains('active') &&
+                !navMenu.contains(e.target) &&
+                !hamburger.contains(e.target)
+            ) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        window.addEventListener('resize', () => {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+            document.body.style.overflow = '';
         });
     }
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
             if (navMenu) navMenu.classList.remove('active');
             if (hamburger) hamburger.classList.remove('active');
+            document.body.style.overflow = '';
         });
     });
     // On-Scroll Reveal Animation

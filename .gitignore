@@ -1,0 +1,4 @@
+# Ignore contact messages file
+messages.txt
+# Ignore contact messages database
+messages.db
