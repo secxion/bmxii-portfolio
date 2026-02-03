@@ -1,24 +1,4 @@
 
-# ...existing code...
-
-# Place this after app and db are defined
-
-# Temporary admin migration trigger route (remove after use!)
-@app.route('/admin/run-migrations')
-def run_migrations():
-    from flask import request, abort
-    secret = request.args.get('secret')
-    admin_secret = os.environ.get('ADMIN_SECRET', 'lofi2.0')
-    password = request.args.get('password')
-    admin_password = os.environ.get('ADMIN_PASSWORD', 'adminpass201')
-    if secret != admin_secret or password != admin_password:
-        abort(404)
-    try:
-        from flask_migrate import upgrade
-        upgrade()
-        return '<h2>Migration successful! You can now remove this route.</h2>'
-    except Exception as e:
-        return f'<h2>Migration failed:</h2><pre>{e}</pre>', 500
 
 # Ensure .env is loaded for environment variables
 from dotenv import load_dotenv
