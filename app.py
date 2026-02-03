@@ -1,5 +1,6 @@
 
 
+
 # Logout route (should be after all other routes)
 @app.route('/admin/logout')
 def admin_logout():
