@@ -84,6 +84,7 @@ body::before {
     display: flex;
     list-style: none;
     gap: 1rem;
+    
 }
 
 .nav-menu li a {
@@ -129,16 +130,25 @@ body::before {
     .nav-menu {
         flex-direction: column;
         position: absolute;
-        top: 50px; /* Increased from 40px to 90px to clear the logo */
+        top: 0.3px;
         left: 0;
         width: 100%;
         background: rgba(10, 10, 10, 0.98);
-        border: 1px solid var(--neon-green);
         border-top: none;
         transform: translateY(-120%);
         transition: transform 0.4s ease;
         padding: 1rem 0;
-        z-index: 200;
+        z-index: 100;
+    }
+
+    .logo img {
+        position: relative;
+        z-index: 201;
+    }
+
+    .hamburger {
+        position: relative;
+        z-index: 201;
     }
 
     .nav-menu.active {
