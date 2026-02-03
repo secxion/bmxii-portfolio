@@ -1,3 +1,8 @@
+
+# ...existing code...
+
+# Place this after app and db are defined
+
 # Temporary admin migration trigger route (remove after use!)
 @app.route('/admin/run-migrations')
 def run_migrations():
