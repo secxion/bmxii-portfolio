@@ -1,3 +1,8 @@
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    session.pop('admin_secret', None)
+    return redirect(url_for('admin_messages', secret=os.environ.get('ADMIN_SECRET', 'lofi2.0')))
 
 
 # Ensure .env is loaded for environment variables
@@ -122,8 +127,15 @@ def admin_messages():
         location = 'Unknown'
     admin_logins.append({'timestamp': timestamp, 'ip': ip, 'location': location})
     messages = Message.query.order_by(Message.timestamp.desc()).all()
-    return render_template('admin_messages.html', messages=messages, admin_logins=admin_logins)
+    return render_template('admin_messages.html', messages=messages, admin_logins=admin_logins, show_logout=True)
 
+
+# Logout route (should be after all other routes)
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    session.pop('admin_secret', None)
+    return redirect(url_for('admin_messages', secret=os.environ.get('ADMIN_SECRET', 'lofi2.0')))
 
 # For local development only
 

@@ -13,6 +13,11 @@
 </head>
 <body>
     <h1>All Messages</h1>
+    {% if show_logout %}
+    <form action="/admin/logout" method="get" style="margin-bottom:2rem;">
+        <button type="submit" style="background:#222;color:#fff;border:1px solid #333;padding:0.5rem 1.5rem;border-radius:4px;cursor:pointer;">Logout</button>
+    </form>
+    {% endif %}
     <h2>Recent Admin Logins</h2>
     <table>
         <thead>
