@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Messages - Admin</title>
+    <style>
+        body { background: #111; color: #fff; font-family: monospace; }
+        table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+        th, td { border: 1px solid #333; padding: 0.5rem; }
+        th { background: #222; }
+        tr:nth-child(even) { background: #181818; }
+    </style>
+</head>
+<body>
+    <h1>All Messages</h1>
+    <h2>Recent Admin Logins</h2>
+    <table>
+        <thead>
+            <tr><th>Timestamp (UTC)</th><th>IP</th><th>Location</th></tr>
+        </thead>
+        <tbody>
+        {% for log in admin_logins|reverse %}
+            <tr>
+                <td>{{ log.timestamp }}</td>
+                <td>{{ log.ip }}</td>
+                <td>{{ log.location }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Service</th>
+                <th>Message</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for m in messages %}
+            <tr>
+                <td>{{ m.id }}</td>
+                <td>{{ m.name }}</td>
+                <td>{{ m.email }}</td>
+                <td>{{ m.phone }}</td>
+                <td>{{ m.service }}</td>
+                <td>{{ m.message }}</td>
+                <td>{{ m.timestamp }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

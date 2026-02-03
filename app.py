@@ -1,29 +1,37 @@
-from flask import Flask, render_template, request, jsonify
-import sqlite3
+
+# Ensure .env is loaded for environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
+
+
 import os
 from datetime import datetime
+from flask import Flask, render_template, request, jsonify
 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+
+# Configure app for SQLAlchemy with environment-based database URL
 app = Flask(__name__)
-DB_PATH = 'messages.db'
-TXT_PATH = 'messages.txt'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///messages.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Ensure database exists
-def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        email TEXT,
-        phone TEXT,
-        service TEXT,
-        message TEXT,
-        timestamp TEXT
-    )''')
-    conn.commit()
-    conn.close()
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-init_db()
+
+
+# Message model for storing contact form submissions
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(40))
+    service = db.Column(db.String(120))
+    message = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 @app.route('/')
 def index():
@@ -39,19 +47,66 @@ def contact():
     message = data.get('message')
     timestamp = datetime.now().isoformat()
 
-    # Save to database
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute('INSERT INTO messages (name, email, phone, service, message, timestamp) VALUES (?, ?, ?, ?, ?, ?)',
-              (name, email, phone, service, message, timestamp))
-    conn.commit()
-    conn.close()
-
-    # Save to text file
-    with open(TXT_PATH, 'a', encoding='utf-8') as f:
-        f.write(f"[{timestamp}] {name} <{email}> ({phone}) [{service}]: {message}\n")
-
+    # Save to database using SQLAlchemy
+    msg = Message(
+        name=name,
+        email=email,
+        phone=phone,
+        service=service,
+        message=message
+    )
+    db.session.add(msg)
+    db.session.commit()
     return jsonify({'success': True}), 200
 
+
+# Admin route to view all messages
+from flask import request, abort, render_template_string
+
+# Secret URL and password prompt for admin messages
+
+# Simple login log (in-memory, resets on server restart)
+admin_logins = []
+
+@app.route('/admin/messages')
+def admin_messages():
+    from datetime import datetime
+    import requests
+    secret = request.args.get('secret')
+    admin_secret = os.environ.get('ADMIN_SECRET', 'lofi2.0')
+    print('DEBUG: Loaded admin_secret from env:', admin_secret)
+    if secret != admin_secret:
+        abort(404)
+    # Password prompt
+    password = request.args.get('password')
+    admin_password = os.environ.get('ADMIN_PASSWORD', 'adminpass201')
+    if password != admin_password:
+        # Show password prompt form
+        return render_template_string('''
+            <form method="get">
+                <input type="hidden" name="secret" value="{{ secret }}" />
+                <input type="password" name="password" placeholder="Admin Password" />
+                <button type="submit">Login</button>
+            </form>
+            {% if password is not none %}<p style="color:red">Incorrect password</p>{% endif %}
+        ''', secret=secret, password=password)
+    # Log timestamp and IP (geo lookup placeholder)
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    timestamp = datetime.utcnow().isoformat()
+    # Simple geo lookup (using ipinfo.io, can be replaced with any service)
+    try:
+        geo = requests.get(f'https://ipinfo.io/{ip}/json', timeout=2).json()
+        location = geo.get('city', '') + ', ' + geo.get('region', '') + ', ' + geo.get('country', '')
+    except Exception:
+        location = 'Unknown'
+    admin_logins.append({'timestamp': timestamp, 'ip': ip, 'location': location})
+    messages = Message.query.order_by(Message.timestamp.desc()).all()
+    return render_template('admin_messages.html', messages=messages, admin_logins=admin_logins)
+
+
+# For local development only
 if __name__ == '__main__':
     app.run(debug=True)
+
+# For production (Render), use gunicorn:
+#   gunicorn app:app
