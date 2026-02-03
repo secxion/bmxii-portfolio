@@ -63,39 +63,58 @@ def contact():
 
 
 # Admin route to view all messages
-from flask import request, abort, render_template_string
+from flask import request, abort, render_template_string, session, redirect, url_for
 
 # Secret URL and password prompt for admin messages
 
 # Simple login log (in-memory, resets on server restart)
 admin_logins = []
 
-@app.route('/admin/messages')
+
+# Admin login with POST and session
+@app.route('/admin/messages', methods=['GET', 'POST'])
 def admin_messages():
     from datetime import datetime
     import requests
-    secret = request.args.get('secret')
     admin_secret = os.environ.get('ADMIN_SECRET', 'lofi2.0')
-    print('DEBUG: Loaded admin_secret from env:', admin_secret)
-    if secret != admin_secret:
-        abort(404)
-    # Password prompt
-    password = request.args.get('password')
     admin_password = os.environ.get('ADMIN_PASSWORD', 'adminpass201')
-    if password != admin_password:
-        # Show password prompt form
+    secret = request.args.get('secret')
+
+    # Check session for admin login
+    if session.get('admin_logged_in') == True and session.get('admin_secret') == admin_secret:
+        pass  # Already logged in
+    else:
+        # Not logged in, check secret
+        if secret != admin_secret:
+            abort(404)
+        if request.method == 'POST':
+            password = request.form.get('password')
+            if password == admin_password:
+                session['admin_logged_in'] = True
+                session['admin_secret'] = admin_secret
+                # Redirect to remove password from POST body
+                return redirect(url_for('admin_messages', secret=secret))
+            else:
+                return render_template_string('''
+                    <form method="post">
+                        <input type="hidden" name="secret" value="{{ secret }}" />
+                        <input type="password" name="password" placeholder="Admin Password" />
+                        <button type="submit">Login</button>
+                    </form>
+                    <p style="color:red">Incorrect password</p>
+                ''', secret=secret)
+        # Show password prompt
         return render_template_string('''
-            <form method="get">
+            <form method="post">
                 <input type="hidden" name="secret" value="{{ secret }}" />
                 <input type="password" name="password" placeholder="Admin Password" />
                 <button type="submit">Login</button>
             </form>
-            {% if password is not none %}<p style="color:red">Incorrect password</p>{% endif %}
-        ''', secret=secret, password=password)
+        ''', secret=secret)
+
     # Log timestamp and IP (geo lookup placeholder)
     ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     timestamp = datetime.utcnow().isoformat()
-    # Simple geo lookup (using ipinfo.io, can be replaced with any service)
     try:
         geo = requests.get(f'https://ipinfo.io/{ip}/json', timeout=2).json()
         location = geo.get('city', '') + ', ' + geo.get('region', '') + ', ' + geo.get('country', '')
@@ -107,6 +126,10 @@ def admin_messages():
 
 
 # For local development only
+
+# Set a secret key for session management
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'dev-secret-key')
+
 if __name__ == '__main__':
     app.run(debug=True)
 
