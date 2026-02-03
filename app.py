@@ -1,14 +1,3 @@
-
-
-
-# Logout route (should be after all other routes)
-@app.route('/admin/logout')
-def admin_logout():
-    session.pop('admin_logged_in', None)
-    session.pop('admin_secret', None)
-    return redirect(url_for('admin_messages', secret=os.environ.get('ADMIN_SECRET', 'lofi2.0')))
-
-
 # Ensure .env is loaded for environment variables
 from dotenv import load_dotenv
 load_dotenv()
@@ -21,7 +10,6 @@ from flask import Flask, render_template, request, jsonify
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
 
 # Configure app for SQLAlchemy with environment-based database URL
 app = Flask(__name__)
