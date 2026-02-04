@@ -92,19 +92,24 @@
     </section>
     <section id="contact" class="section reveal">
         <h2 class="section-title">Connect With Excellence</h2>
+        <div class="contact-options" style="margin-bottom:1.5rem; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: center;">
+            <a href="mailto:boardman12@bmxii.org" class="contact-email" style="color:#fff;font-weight:bold; text-decoration:none; display:flex; align-items:center; gap:0.4em;"><i class="fas fa-envelope"></i> boardman12@bmxii.org</a>
+            <a href="https://wa.me/2347049809484" class="contact-whatsapp" style="color:#fff; text-decoration:none; display:flex; align-items:center; gap:0.4em;" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+            <a href="tel:+13254005657" class="contact-phone" style="color:#fff; text-decoration:none; display:flex; align-items:center; gap:0.4em;"><i class="fas fa-phone"></i> <span>+1 325-400-5657 (Int'l)</span></a>
+        </div>
         <form class="contact-form" id="contactForm">
             <div id="messageContainer"></div> 
             <div class="form-group">
                 <label for="name">Full Name *</label>
-                <input type="text" id="name" name="name" required placeholder="Enter your complete name">
+                <input type="text" id="name" name="name" required>
             </div>
             <div class="form-group">
                 <label for="email">Email Address *</label>
-                <input type="email" id="email" name="email" required placeholder="Enter your professional email">
+                <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
                 <label for="phone">Contact Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your contact number">
+                <input type="tel" id="phone" name="phone">
             </div>
             <div class="form-group">
                 <label for="service">Service of Interest</label>
@@ -121,7 +126,7 @@
             </div>
             <div class="form-group">
                 <label for="message">Detailed Message *</label>
-                <textarea id="message" name="message" rows="6" required placeholder="Please provide detailed information about your project requirements..."></textarea>
+                <textarea id="message" name="message" rows="6" required></textarea>
             </div>
             <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Submit Inquiry</button>
         </form>
@@ -129,6 +134,11 @@
     <footer class="footer">
         <div class="footer-content">
             <p>&copy; 2019 - 2025 Boardman12 (BMXII). All rights reserved. | bmxii.org | e-Architecture</p>
+            <p>Contact: <a href="mailto:boardman12@bmxii.org" style="color:#00ff41;text-decoration:underline;">boardman12@bmxii.org</a></p>
+            <div class="footer-contact-options" style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; margin-top: 0.5rem;">
+                <a href="mailto:boardman12@bmxii.org" class="footer-email" style="color:#00ff41; text-decoration:none; display:flex; align-items:center; gap:0.4em;"><i class="fas fa-envelope"></i> <span>Email Us</span></a>
+                <a href="https://wa.me/2347049809484" class="footer-whatsapp" target="_blank" style="color:#00ff41; text-decoration:none; display:flex; align-items:center; gap:0.4em;"><i class="fab fa-whatsapp"></i> <span>WhatsApp</span></a>
+            </div>
         </div>
     </footer>
     <div id="popupModal" class="popup-modal">
